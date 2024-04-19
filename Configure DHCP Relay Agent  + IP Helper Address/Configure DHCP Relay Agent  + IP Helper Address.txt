@@ -1,0 +1,28 @@
+R1
+en 
+config t
+hostname R1
+int g0/0
+ip add 192.168.10.1 255.255.255.0
+
+no shut 
+exit 
+int g0/1
+ip add 192.168.20.1 255.255.255.0
+ip helper-add 192.168.20.2
+no shut 
+exit
+do wr
+
+DHCP SERVER 
+IP Addr: 192.168.20.2
+Subnet Mask: 255.255.255.0
+Default Gateway: 192.168.20.1
+DNS Server: 192.168.20.2
+
+DHCP POOL 
+Pool Name: IT-DEPT-POOL
+Default Gateway: 192.168.10.1
+Start IP: 192.168.10.4
+DNS Server: 192.168.20.2
+No. of Users: 512
