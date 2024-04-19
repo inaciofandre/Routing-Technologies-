@@ -1,0 +1,46 @@
+R1
+en
+config t
+hostname R1
+int g0/0
+ip add 192.168.10.1 255.255.255.0
+no shut 
+exit 
+do wr
+==========================================================
+DHCP SERVER 
+IP CONFIG 
+IP address: 192.168.10.2 
+Subnet Mask: 255.255.255.0
+Default Gateway: 192.168.10.1
+DNS Server: 19.168.10.3
+
+DHCP CONFIG 
+Pool Name: FLOOR1-POOL 
+Default gateway: 192.168.10.1
+DNS Server: 192.168.10.3
+Start IP:  192.168.10.5
+Subnet Mask: 255.255.255.0
+Number of Host: 251
+==========================================================
+DNS SERVER
+IP CONFIG 
+IP address: 192.168.10.3 
+Subnet Mask: 255.255.255.0
+Default Gateway: 192.168.10.1
+DNS Server: 19.168.10.3
+
+DNS CONFIG 
+Name: cisco.com
+IP Address: 192.168.10.4
+==========================================================
+WEB SERVER 
+IP CONFIG 
+IP address: 192.168.10.4 
+Subnet Mask: 255.255.255.0
+Default Gateway: 192.168.10.1
+DNS Server: 19.168.10.3
+
+WEB CONFIG 
+under Services, edit the index file (index.html)
+==========================================================
