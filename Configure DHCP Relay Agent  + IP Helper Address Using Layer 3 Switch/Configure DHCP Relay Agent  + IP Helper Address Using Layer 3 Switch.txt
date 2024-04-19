@@ -1,0 +1,31 @@
+MLSW
+en
+config t
+hostname MLSW
+ip routing 
+int g1/0/1
+no switchport 
+ip add 192.168.10.1 255.255.255.0
+ip helper-add 192.168.20.5
+no shut 
+exit 
+int g1/0/2
+no switchport 
+ip add 192.168.20.1 255.255.255.0
+no shut 
+exit 
+do wr
+
+DHCP SERVER 
+IP Address: 192.168.20.5
+Subnet Mask: 255.255.255.0
+Default Gateway: 192.168.20.1 
+DNS Server: 192.168.20.5
+
+DHCP POOL 
+Pool Name: IT-DEPT-POOL
+Default Gateway: 192.168.10.1
+DNS Server: 192.168.20.5
+Start IP: 192.168.10.5
+Subnet Mask: 255.255.255.0
+No. of Users: 251
