@@ -1,0 +1,36 @@
+MLSW
+en
+config t
+hostname MLSW
+ip routing 
+int g1/0/1
+no switchport
+ip add 192.168.10.1 255.255.255.0
+exit
+int g1/0/2
+no switchport
+ip add 192.168.20.1 255.255.255.0
+exit
+int g1/0/3
+no switchport
+ip add 192.168.30.1 255.255.255.0
+exit
+service dhcp
+ip dhcp pool IT-POOL
+network 192.168.10.0 255.255.255.0
+default-router 192.168.10.1
+dns-server 192.168.10.1
+exit
+ip dhcp pool FIN-POOL
+network 192.168.20.0 255.255.255.0
+default-router 192.168.20.1
+dns-server 192.168.20.1
+exit
+ip dhcp pool FIN-POOL
+network 192.168.30.0 255.255.255.0
+default-router 192.168.30.1
+dns-server 192.168.30.1
+exit
+ip dhcp exclude-add 192.168.10.1 192.168.10.5
+ip dhcp exclude-add 192.168.20.1 192.168.20.5
+ip dhcp exclude-add 192.168.30.1 192.168.30.5
