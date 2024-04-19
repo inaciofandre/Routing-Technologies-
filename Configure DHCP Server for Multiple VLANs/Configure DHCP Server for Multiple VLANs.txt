@@ -1,0 +1,103 @@
+R1
+en 
+config t
+hostname R1
+int g0/0
+no shut 
+exit 
+int g0/0.10
+encapsulation dot1q 10
+ip add 192.168.10.1 255.255.255.0
+exit 
+int g0/0.20
+encapsulation dot1q 20
+ip add 192.168.20.1 255.255.255.0
+exit
+int g0/0.30
+encapsulation dot1q 30
+ip add 192.168.30.1 255.255.255.0
+exit
+service dhcp
+ip dhcp pool IT-POOL 
+network 192.168.10.0 255.255.255.0
+default-router 192.168.10.1 
+dns-server 192.168.10.1
+exit 
+ip dhcp pool HR-POOL 
+network 192.168.20.0 255.255.255.0
+default-router 192.168.20.1 
+dns-server 192.168.20.1
+exit 
+ip dhcp pool FIN-POOL 
+network 192.168.30.0 255.255.255.0
+default-router 192.168.30.1 
+dns-server 192.168.30.1
+exit 
+ip dhcp excluded-add 192.168.10.1 192.168.10.4
+ip dhcp excluded-add 192.168.20.1 192.168.20.4
+ip dhcp excluded-add 192.168.30.1 192.168.30.4
+do wr
+==========================================================
+MLSW
+en
+config t
+hostname MLSW
+vlan 10 
+name IT-DEPT
+vlan 20
+name HR-DEPT 
+vlan 30
+name FIN-DEPT 
+exit
+int range g1/0/1-3, g1/0/24
+switchport mode trunk 
+exit 
+do wr
+==========================================================
+SW1
+en
+config t
+hostname SW1
+vlan 10 
+name IT-DEPT
+exit
+int range f0/1-5
+switchport mode access 
+switchport access vlan 10
+exit
+int f0/24
+switchport mode trunk 
+exit
+do wr
+==========================================================
+SW2
+en
+config t
+hostname SW2
+vlan 20 
+name HR-DEPT
+exit
+int range f0/1-5
+switchport mode access 
+switchport access vlan 20
+exit
+int f0/24
+switchport mode trunk
+exit
+do wr
+==========================================================
+SW3
+en
+config t
+hostname SW3
+vlan 30 
+name FIN-DEPT
+exit 
+int range f0/1-5
+switchport mode access 
+switchport access vlan 30
+exit
+int f0/24
+switchport mode trunk
+exit
+do wr
