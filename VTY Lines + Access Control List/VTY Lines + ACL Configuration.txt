@@ -1,0 +1,34 @@
+// Basic Configuration //
+
+**R1
+en
+config t
+hostname R1
+int g0/0
+ip add 192.168.10.1 255.255.255.0
+no shut 
+exit 
+do wr
+
+// SSH Configuration //
+
+**R1
+ip domain-name cisco.com
+username cisco password cisco
+crypto key generate 1024
+ssh version 2
+line vty 0 4
+login local
+transport input ssh
+exit
+do wr
+
+// ACL Configuration //
+**R1
+access-list 20 permit host 192.168.10.10
+access-list 20 permit host 192.168.10.20
+access-list 20 deny any
+line vty 0 4
+access-class 20 in
+exit 
+do wr
