@@ -1,0 +1,58 @@
+// Basic Configuration //
+**R1
+en
+config t
+hostname NAT-ROUTER 
+int g0/0
+ip add 200.100.50.1 255.255.255.252
+no shut 
+exit 
+int g0/1
+ip add 192.168.10.1 255.255.255.0
+no shut 
+exit 
+do wr
+
+**ISP
+en
+config t
+hostname ISP-ROUTER
+int g0/0
+ip add 200.100.50.2 255.255.255.252
+no shut 
+exit 
+int g0/1
+ip add 8.8.8.1 255.255.255.0
+no shut 
+exit 
+do wr
+
+// OSPF Configuration //
+
+**R1
+router ospf 7
+router-id 1.1.1.1
+network 200.100.50.0 0.0.0.3 area 0
+network 192.168.10.0 0.0.0.255 area 0
+exit 
+do wr
+
+**ISP 
+router ospf 7
+router-id 2.2.2.2
+network 200.100.50.0 0.0.0.3 area 0
+network 8.8.8.0 0.0.0.255 area 0
+exit 
+do wr 
+
+// PAN-NAT Configuration //
+**NAT-ROUTER 
+access-list 25 permit 192.168.10.0 0.0.0.255
+ip nat inside source list 25 interface g0/0 overload
+int g0/1
+ip nat inside 
+exit 
+int g0/0
+ip nat outside 
+exit 
+do wr
