@@ -1,0 +1,36 @@
+// Basic Configuration //
+**R1
+en 
+config t
+hostname R1
+int g0/0
+ip add 192.168.10.1 255.255.255.0
+no shut 
+exit 
+int g0/1
+ip add 10.10.10.1 255.255.255.0
+no shut 
+exit 
+do wr
+
+**SW1
+en
+config t
+hostname SW1
+
+**SW2
+en
+config t
+hostname SW2
+
+
+// ACL Standard Configuration //
+**R1
+access-list 10 permit host 192.168.10.10
+access-list 10 permit host 192.168.10.20
+access-list 10 deny any
+int g0/0
+ip access-group 10 in
+exit 
+do wr
+
