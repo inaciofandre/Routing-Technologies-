@@ -1,0 +1,87 @@
+// BASIC CONFIGURATION //
+**R1 
+en
+config t
+hostname R1
+int g0/0
+ip add 10.10.10.1 255.255.255.252
+no shut 
+exit 
+do wr 
+
+**R2
+en
+config t
+hostname R1
+int g0/0
+ip add 10.10.10.2 255.255.255.252
+no shut 
+exit 
+do wr
+int g0/1
+ip add 10.10.10.5 255.255.255.252
+no shut 
+exit 
+int g0/2
+ip add 192.168.20.1 255.255.255.0
+no shut 
+exit 
+do wr
+
+**R3
+en 
+config t
+hostname R3
+int g0/0
+ip add 10.10.10.6 255.255.255.252
+no shut 
+exit 
+do wr
+
+// OSPF ROUTING CONFIGURATION //
+**R1
+router ospf 10
+router-id 1.1.1.1
+network 10.10.10.0 0.0.0.3 area 0
+network 192.168.10.0 0.0.0.255 area 0
+exit
+do wr
+
+**R2
+router ospf 10
+router-id 2.2.2.2
+network 10.10.10.0 0.0.0.3 area 0
+network 10.10.10.4 0.0.0.3 area 0
+network 192.168.20.0 0.0.0.255 area 0
+exit
+do wr
+
+**R3
+router ospf 10
+router-id 3.3.3.3
+network 10.10.10.4 0.0.0.3 area 0
+network 192.168.10.0 0.0.0.255 area 0
+exit 
+do wr
+
+// HSRP CONFIGURATION //
+**R1
+int g0/1
+ip add 192.168.10.3 255.255.255.0
+standby 5 priority 100
+standby 5 ip 192.168.10.1
+no shut 
+exit 
+do wr
+
+**R3
+int g0/1
+ip add 192.168.10.2 255.255.255.0
+standby 5 priority 90
+standby 5 ip 192.168.10.1
+no shut 
+exit 
+do wr
+
+// TESTING HSRP CONFIGURATION //
+do show standby brief
